@@ -1,0 +1,70 @@
+<dom-module id="x-clock">
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Template -->
+  <template>
+    <style>
+
+      /* Element */
+      :host {}
+
+      /* Separator */
+      i {
+        font-style: normal;
+        margin: 0 12px;
+      }
+
+    </style>
+
+    <strong>[[time]]</strong><i>/</i><span>[[date]]</span>
+
+  </template>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Script -->
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element
+         */
+        is: 'x-clock',
+        properties: {
+
+          /* Holds current time */
+          time: {
+            type: String
+          },
+
+          /* Holds current date */
+          date: {
+            type: String
+          }
+
+        },
+
+        /**
+         * When element is ready, execute and start an per-second interval for this.tick()
+         */
+        ready: function () {
+          this.tick();
+          window.setInterval(function () {
+            this.tick();
+          }.bind(this), 1000);
+        },
+
+        /**
+         * One clock tick (generates time and date using moment.js library)
+         * @TODO Generating date every second is absurdly super-redundant, optimize! #perfMatters
+         */
+        tick: function () {
+          this.time = moment().format('HH:mm:ss');
+          this.date = moment().format('dddd, Do MMMM YYYY');
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

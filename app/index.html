@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Polymer Starter Kit">
+    <title>New Tab</title>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- File imports & builds -->
+    <link rel="manifest" href="manifest.json">
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild-->
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- endbuild -->
+    <link rel="import" href="elements/elements.html">
+
+  </head>
+  <body unresolved>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- App template -->
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind" id="app">
+      <paper-drawer-panel drawer-width="272px" force-narrow>
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <!-- Drawer -->
+        <paper-header-panel drawer>
+
+          <!-- ----------------------------------------------------------------------------------------------------- -->
+          <!-- Drawer - Toolbar -->
+          <paper-toolbar>
+            <img src="./images/chrome.png">
+            <span class="menu-name">Google Chrome</span>
+          </paper-toolbar>
+
+          <!-- ----------------------------------------------------------------------------------------------------- -->
+          <!-- Drawer - Content -->
+          <section>
+            <div on-tap="openLink" data-link="chrome://newtab"><paper-ripple></paper-ripple><iron-icon icon="add"></iron-icon><span>New Tab</span></div>
+            <div on-tap="openNewWindow" data-incognito="false"><paper-ripple></paper-ripple><iron-icon icon="open-in-new"></iron-icon><span>New Window</span></div>
+            <div on-tap="openNewWindow" data-incognito="true"><paper-ripple></paper-ripple><iron-icon icon="visibility-off"></iron-icon><span>New Incognito Window</span></div>
+            <div on-tap="openLink" data-link="https://chrome.google.com/webstore"><paper-ripple></paper-ripple><iron-icon icon="store"></iron-icon><span>Chrome Web Store</span></div>
+            <div on-tap="openLink" data-link="chrome://apps"><paper-ripple></paper-ripple><iron-icon icon="apps"></iron-icon><span>Apps</span></div>
+            <div on-tap="openLink" data-link="chrome://bookmarks"><paper-ripple></paper-ripple><iron-icon icon="star"></iron-icon><span>Bookmarks</span></div>
+            <div on-tap="openLink" data-link="chrome://downloads"><paper-ripple></paper-ripple><iron-icon icon="file-download"></iron-icon><span>Downloads</span></div>
+            <div on-tap="openLink" data-link="chrome://history"><paper-ripple></paper-ripple><iron-icon icon="history"></iron-icon><span>History</span></div>
+            <div on-tap="openLink" data-link="chrome://extensions"><paper-ripple></paper-ripple><iron-icon icon="extension"></iron-icon><span>Extensions</span></div>
+            <div on-tap="openLink" data-link="chrome://flags"><paper-ripple></paper-ripple><iron-icon icon="flag"></iron-icon><span>Flags</span></div>
+            <hr>
+            <div on-tap="openLink" data-link="chrome://settings"><paper-ripple></paper-ripple><span>Settings</span></div>
+            <div on-tap="openLink" data-link="https://support.google.com/chrome/?p=help&ctx=menu#topic=3227046"><paper-ripple></paper-ripple><span>Help</span></div>
+            <div on-tap="openLink" data-link="chrome://help"><paper-ripple></paper-ripple><span>About</span></div>
+          </section>
+
+        </paper-header-panel>
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <!-- Main -->
+        <paper-header-panel main>
+
+          <!-- ----------------------------------------------------------------------------------------------------- -->
+          <!-- Main - Toolbar -->
+          <paper-toolbar id="mainToolbar" class="tall">
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            <span></span>
+            <p on-tap="openLink" data-link="chrome://apps" hidden$="[[!__shortcuts.apps]]"><paper-ripple></paper-ripple><iron-icon icon="apps"></iron-icon><span>Apps</span></p>
+            <p on-tap="openLink" data-link="chrome://bookmarks" hidden$="[[!__shortcuts.bookmarks]]"><paper-ripple></paper-ripple><iron-icon icon="star"></iron-icon><span>Bookmarks</span></p>
+            <p on-tap="openLink" data-link="chrome://downloads" hidden$="[[!__shortcuts.downloads]]"><paper-ripple></paper-ripple><iron-icon icon="file-download"></iron-icon><span>Downloads</span></p>
+            <p on-tap="openLink" data-link="chrome://history" hidden$="[[!__shortcuts.history]]"><paper-ripple></paper-ripple><iron-icon icon="history"></iron-icon><span>History</span></p>
+            <p on-tap="openLink" data-link="chrome://extensions" hidden$="[[!__shortcuts.extensions]]"><paper-ripple></paper-ripple><iron-icon icon="extension"></iron-icon><span>Extensions</span></p>
+            <p on-tap="openLink" data-link="chrome://flags" hidden$="[[!__shortcuts.flags]]"><paper-ripple></paper-ripple><iron-icon icon="flag"></iron-icon><span>Flags</span></p>
+            <paper-menu-button horizontal-align="right">
+              <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+              <section class="dropdown-content">
+                <div on-tap="openCustomizeDialog"><paper-ripple></paper-ripple><span>Customize</span></div>
+                <div on-tap="openAboutDialog"><paper-ripple></paper-ripple><span>About</span></div>
+              </section>
+            </paper-menu-button>
+            <div class="middle middle-container">
+              <div class="app-name">Simple Material New Tab</div>
+            </div>
+            <div class="bottom bottom-container">
+              <div class="bottom-title"><x-clock></x-clock></div>
+            </div>
+          </paper-toolbar>
+
+          <!-- ----------------------------------------------------------------------------------------------------- -->
+          <!-- Main - Content -->
+          <main id="content">
+            <x-bookmarks></x-bookmarks>
+            <x-apps></x-apps>
+          </main>
+
+        </paper-header-panel>
+      </paper-drawer-panel>
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+      <!-- Customization dialog -->
+      <paper-dialog id="customizeDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
+        <h2>Customization</h2>
+        <paper-dialog-scrollable>
+          <div class="shortcuts">
+            <h3>Toggle Shortcuts</h3>
+            <span>Select which shortcuts will be visible in top-right corner:</span>
+            <div>
+              <paper-checkbox checked="{{__shortcuts.apps}}">Apps</paper-checkbox>
+              <paper-checkbox checked="{{__shortcuts.bookmarks}}">Bookmarks</paper-checkbox>
+              <paper-checkbox checked="{{__shortcuts.downloads}}">Downloads</paper-checkbox>
+              <paper-checkbox checked="{{__shortcuts.history}}">History</paper-checkbox>
+              <paper-checkbox checked="{{__shortcuts.extensions}}">Extensions</paper-checkbox>
+              <paper-checkbox checked="{{__shortcuts.flags}}">Flags</paper-checkbox>
+            </div>
+          </div>
+          <div class="fabs">
+            <h3>Color theme</h3>
+            <span>Select a color theme for the extension:</span>
+            <div>
+              <paper-fab on-tap="changeThemeColor" data-theme="red" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="pink" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="purple" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="indigo" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="blue" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="cyan" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="teal" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="green" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="orange" icon="" mini></paper-fab>
+              <paper-fab on-tap="changeThemeColor" data-theme="grey" icon="check" mini></paper-fab>
+            </div>
+          </div>
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Close</paper-button>
+        </div>
+      </paper-dialog>
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+      <!-- About dialog -->
+      <paper-dialog id="aboutDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
+        <h2 class="about">
+          <img src="images/icon-256.png">
+          <p>Simple Material New Tab</p>
+        </h2>
+        <paper-dialog-scrollable>
+          Morbi lobortis molestie quam, ac sagittis neque interdum a. Cras sapien nulla, vulputate sit amet nulla vel,
+          porttitor auctor urna. Pellentesque vehicula luctus tincidunt. Nulla volutpat ante id consectetur condimentum.
+          Nullam a urna sed nunc tristique pharetra. Vivamus et suscipit ante. Ut quis vulputate quam, mollis posuere
+          ligula.
+          <ul>
+            <li><strong>Version:</strong> 1.0</li>
+            <li><strong>Author:</strong> Michal Sukupčák</li>
+            <li><strong>Source code:</strong> github.com/michalsukupcak/simple-material-new-tab</li>
+            <li><strong>License:</strong> Do whatever you want, no copyright applies. :)</li>
+          </ul>
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Close</paper-button>
+        </div>
+      </paper-dialog>
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+      <!-- Toast -->
+      <paper-toast id="toast">
+        <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
+      </paper-toast>
+
+      <!-- --------------------------------------------------------------------------------------------------------- -->
+      <!-- Browser data storage -->
+
+      <!-- Shortcuts -->
+      <iron-localstorage name="smnt-shortcuts"
+                         value="{{__shortcuts}}"
+                         on-iron-localstorage-load-empty="__shortcutsEmpty"
+      ></iron-localstorage>
+
+      <!-- Theme -->
+      <iron-localstorage name="smnt-theme-color"
+                         value="{{__themeColor}}"
+                         on-iron-localstorage-load="__themeColorLoaded"
+                         on-iron-localstorage-load-empty="__themeColorEmpty"
+      ></iron-localstorage>
+
+    </template>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- JS imports and builds -->
+    <!-- build:js scripts/app.js -->
+    <script src="scripts/moment.js"></script>
+    <script src="scripts/app.js"></script>
+    <!-- endbuild-->
+
+  </body>
+</html>

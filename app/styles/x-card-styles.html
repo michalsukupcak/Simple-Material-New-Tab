@@ -1,0 +1,87 @@
+<dom-module id="x-card-styles">
+  <template>
+    <style>
+
+      /* Element */
+      :host {
+        --card-header-color: var(--primary-color);
+        @apply(--layout-vertical);
+        display: block;
+        padding: 16px;
+        width: 100%;
+      }
+
+      /* Paper material card */
+      paper-material {
+        @apply(--layout-vertical);
+        @apply(--layout-flex);
+        background: white;
+        border-radius: 2px;
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Card header */
+      paper-material header {
+        background: var(--card-header-color);
+        color: white;
+        font-size: 1.2em;
+        padding: 16px;
+      }
+
+      /* Header icon */
+      paper-material header iron-icon {
+        float: left;
+      }
+
+      /* Header text */
+      paper-material header span {
+        float: left;
+        display: block;
+        margin: 0 0 0 8px;
+        padding: 1px 0 0 0;
+      }
+
+      /* Card content */
+      paper-material section {
+        border-bottom: 1px solid #F2F2F2;
+        padding: 16px;
+        overflow: auto;
+      }
+
+      /* Card footer */
+      paper-material footer {
+        color: #555;
+        text-align: center;
+        padding: 2px 0 0 0;
+      }
+
+      /* Footer button */
+      paper-material footer paper-button {
+        font-size: .9em;
+        margin: 5px 0;
+      }
+
+      /* Footer button icon */
+      paper-material footer paper-button iron-icon {
+        display: block;
+        float: left;
+        opacity: .85;
+        height: 23px;
+      }
+
+
+      paper-material footer paper-button span {
+        display: block;
+        float: left;
+        padding: 4px 0 2px 5px;
+      }
+
+      /* Scrollbar (for Chrome) */
+      ::-webkit-scrollbar { width: 2px; }
+      ::-webkit-scrollbar:horizontal { height: 2px; }
+      ::-webkit-scrollbar-thumb { background: #CCC; }
+
+    </style>
+  </template>
+</dom-module>

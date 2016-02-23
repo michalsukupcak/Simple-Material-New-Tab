@@ -1,0 +1,262 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+
+<style is="custom-style">
+
+  /* Application theme */
+  :root {
+
+    /* Custom colors */
+    --color-red: #B71C1C;
+    --color-pink: #E91E63;
+    --color-purple: #512DA8;
+    --color-indigo: #3F51B5;
+    --color-blue: #1E86BD;
+    --color-cyan: #00838F;
+    --color-teal: #00695C;
+    --color-green: #689F38;
+    --color-orange: #EF6C00;
+    --color-grey: #455A64;
+
+    /* Material colors (mostly not used) */
+    --primary-text-color: #212121;
+    --primary-background-color: #ffffff;
+    --secondary-text-color: #737373;
+    --disabled-text-color: #9b9b9b;
+    --divider-color: #dbdbdb;
+    --light-primary-color: #c5cae9;
+    --dark-primary-color: #303f9f;
+    --accent-color: #ff4081;
+    --light-accent-color: #ff80ab;
+    --dark-accent-color: #f50057;
+
+    /* Main color */
+    --primary-color: var(--color-grey);
+
+  }
+
+  /* Body */
+  body {
+    @apply(--layout-fullbleed);
+    @apply(--layout-vertical);
+  }
+
+  /* App panel */
+  paper-drawer-panel {}
+
+  /* Drawer */
+  paper-drawer-panel paper-header-panel[drawer] {}
+
+  /* Drawer - Toolbar */
+  paper-drawer-panel paper-header-panel[drawer] paper-toolbar {
+    color: var(--secondary-text-color);
+    background-color: var(--primary-background-color);
+    border-bottom: var(--drawer-toolbar-border-color);
+  }
+
+  /* Drawer - Toolbar - Chrome icon */
+  paper-drawer-panel paper-header-panel[drawer] paper-toolbar img {
+    max-width: 100%;
+    width: 32px;
+  }
+
+  /* Drawer - Toolbar - Title text */
+  paper-drawer-panel paper-header-panel[drawer] paper-toolbar span {
+    @apply(--paper-font-title);
+    padding: 0 0 0 22px;
+  }
+
+  /* Drawer - Content */
+  paper-drawer-panel paper-header-panel[drawer] section {}
+
+  /* Drawer - Content - Drawer menu entry */
+  paper-drawer-panel paper-header-panel[drawer] section div {
+    @apply(--layout-horizontal);
+    cursor: pointer;
+    padding: 14px 0 14px 19px;
+    transition: .2s ease;
+  }
+  paper-drawer-panel paper-header-panel[drawer] section div:hover {
+    background: #F2F2F2;
+    position: relative;
+  }
+
+  /* Drawer - Content - Drawer menu entry - Icon */
+  paper-drawer-panel paper-header-panel[drawer] section div iron-icon {
+    margin-right: 33px;
+    opacity: 0.54;
+  }
+
+  /* Drawer - Content - Drawer menu entry - Text */
+  paper-drawer-panel paper-header-panel[drawer] section div span {
+    @apply(--layout-self-center);
+  }
+
+  /* Drawer - Content - Drawer menu entry - Separator line */
+  paper-drawer-panel paper-header-panel[drawer] section hr {
+    border: none;
+    border-top: 1px solid #DDD;
+  }
+
+  /* Main */
+  paper-drawer-panel paper-header-panel[main] {}
+
+  /* Main - Toolbar */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar {}
+
+  /* Main - Toolbar - Menu toggle icon */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-icon-button {}
+
+  /* Main - Toolbar - Span (flex spacer) */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar span {
+    @apply(--layout-flex);
+  }
+
+  /* Main - Toolbar - Top-right corner shortcut */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar p {
+    @apply(--layout-horizontal);
+    cursor: pointer;
+    padding: 6px 12px;
+    position: relative;
+  }
+
+  /* Main - Toolbar - Top-right corner shortcut - Ripple effect */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar p paper-ripple {
+    border-radius: 25px;
+    color: #333;
+  }
+
+  /* Main - Toolbar - Top-right corner shortcut - Icon */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar p iron-icon {
+    margin: 0 8px 0 0;
+  }
+
+  /* Main - Toolbar - Top-right corner shortcut - Text */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar p span {
+    @apply(--layout-self-center);
+    font-size: .9em;
+  }
+
+  /* Main - Toolbar - Overflow menu button */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-menu-button {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Main - Toolbar - Overflow menu button - Ellipsis icon */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-menu-button paper-icon-button {}
+
+  /* Main - Toolbar - Overflow menu button - Menu content */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-menu-button section {
+    padding: 3px;
+  }
+
+  /* Main - Toolbar - Overflow menu button - Menu content - Menu entry */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-menu-button section div {
+    color: #333;
+    cursor: pointer;
+    padding: 15px 20px;
+    position: relative;
+    transition: .2s ease;
+  }
+  paper-drawer-panel paper-header-panel[main] paper-toolbar paper-menu-button section div:hover {
+    background: #F2F2F2;
+  }
+
+  /* Main - Toolbar - Main app name style ("Simple Material New Tab") */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar .app-name {
+    font-size: 40px;
+    font-weight: 300;
+  }
+
+  /* Main - Toolbar - Overflow menu button - Menu content - Clock container classes */
+  paper-drawer-panel paper-header-panel[main] paper-toolbar .middle-container,
+  paper-drawer-panel paper-header-panel[main] paper-toolbar .bottom-container {
+    @apply(--layout-horizontal);
+    @apply(--layout-center);
+  }
+  paper-drawer-panel paper-header-panel[main] paper-toolbar .middle-container {
+    height: 100%;
+    margin-left: 48px;
+  }
+  paper-drawer-panel paper-header-panel[main] paper-toolbar .bottom-container {
+    @apply(--paper-font-subhead);
+    margin-left: 48px;
+  }
+
+  /* Main - Content */
+  paper-drawer-panel paper-header-panel[main] main {
+    @apply(--layout-horizontal);
+  }
+
+  /* Main - Content - Bookmarks card */
+  paper-drawer-panel paper-header-panel[main] main x-bookmarks {}
+
+  /* Main - Content - Apps card */
+  paper-drawer-panel paper-header-panel[main] main x-apps {}
+
+  /* Dialog */
+  paper-dialog {
+    max-width: 768px;
+  }
+
+  /* Dialog - Title */
+  paper-dialog h2 {}
+
+  /* Dialog - Title in #aboutDialog */
+  paper-dialog h2.about { text-align: center; }
+
+  /* Dialog - Content */
+  paper-dialog paper-dialog-scrollable {}
+
+  /* Dialog - Content - Shortcuts container in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.shortcuts {}
+
+  /* Dialog - Content - Subtitles for shortcuts in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.shortcuts h3 {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  /* Dialog - Content - Shortcut entry in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.shortcuts div {
+    @apply(--layout-vertical);
+    margin: 5px 0;
+  }
+
+  /* Dialog - Content - Shortcut entry in #customizeDialog - Checkbox */
+  paper-dialog paper-dialog-scrollable div.shortcuts div paper-checkbox {
+    margin: 5px 0 5px 15px;
+  }
+
+  /* Dialog - Content - Fabs container in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.fabs {}
+
+  /* Dialog - Content - Subtitle for fabs in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.fabs h3 {
+    margin-bottom: 0;
+  }
+
+  /* Dialog - Content - Fabs subcontainer in #customizeDialog */
+  paper-dialog paper-dialog-scrollable div.fabs div { @apply(--layout-horizontal); @apply(--layout-wrap); margin: 10px 0 0 0; }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab { margin: 3px; }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="red"] { background: var(--color-red); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="pink"] { background: var(--color-pink); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="purple"] { background: var(--color-purple); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="indigo"] { background: var(--color-indigo); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="blue"] { background: var(--color-blue); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="cyan"] { background: var(--color-cyan); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="teal"] { background: var(--color-teal); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="green"] { background: var(--color-green); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="orange"] { background: var(--color-orange); }
+  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="grey"] { background: var(--color-grey); }
+
+  /* Toast */
+  paper-toast {}
+  /* Toast - "Ok" button */
+  paper-toast .toast-hide-button {
+    color: #eeff41;
+    margin: 10px;
+  }
+
+</style>

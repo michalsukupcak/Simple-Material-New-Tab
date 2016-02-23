@@ -1,0 +1,237 @@
+<dom-module id="x-bookmarks">
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Template -->
+  <template>
+    <style is="custom-style" include="x-card-styles"></style>
+    <style>
+
+      /* Element */
+      :host { padding-right: 8px; }
+
+      /* Card content */
+      paper-material section {
+        @apply(--layout-flex);
+        padding: 16px 28px;
+      }
+
+      /* Top-level folder container */
+      paper-material section div.folder {
+        border-bottom: 1px solid #F2F2F2;
+        margin: 0 0 16px 0;
+        padding: 0 0 16px 0;
+      }
+      paper-material section div.folder:last-of-type {
+        border: none;
+      }
+
+      /* Top-level folder title */
+      paper-material section div.folder h1 {
+        font-size: 1.2em;
+        font-weight: 500;
+        margin: 0 0 8px 0;
+      }
+
+      /* Top-level folder content */
+      paper-material section div.folder div.content {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-flex);
+      }
+
+      /* Sub-folders and links */
+      paper-material section div.folder div.content p,
+      paper-material section div.folder div.content a {
+        border: 1px solid transparent;
+        border-radius: 3px;
+        color: #555;
+        cursor: pointer;
+        margin: 0;
+        min-width: 180px;
+        padding: 5px;
+        position: relative;
+        transition: .2s ease;
+        width: calc(25% - 12px);
+      }
+      paper-material section div.folder div.content p:hover,
+      paper-material section div.folder div.content a:hover {
+        background: #F2F2F2;
+        border-color: #E5E5E5;
+      }
+
+      /* Sub-folder and link icon */
+      paper-material section div.folder div.content p img,
+      paper-material section div.folder div.content a img {
+        float: left;
+        margin: 0 8px 0 0;
+        width: 16px;
+      }
+
+      /* Subfolder and link title */
+      paper-material section div.folder div.content p span,
+      paper-material section div.folder div.content a span {
+        float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 156px;
+        white-space: nowrap;
+      }
+
+    </style>
+
+    <paper-material>
+
+      <!-- Header -->
+      <header>
+        <iron-icon icon="star"></iron-icon>
+        <span>Bookmarks</span>
+      </header>
+
+      <!-- Content -->
+      <section>
+        <template is="dom-repeat" items="[[bookmarks]]" as="bookmark">
+          <div class="folder">
+            <h1>[[bookmark.title]]</h1>
+            <div class="content">
+              <template is="dom-repeat" items="[[bookmark.folders]]" as="folder">
+                <p on-tap="openFolder">
+                  <paper-ripple></paper-ripple>
+                  <img src="../images/folder.png">
+                  <span>[[folder.title]]</span>
+                </p>
+              </template>
+              <template is="dom-repeat" items="[[bookmark.links]]" as="link">
+                <a href="[[link.url]]">
+                  <paper-ripple></paper-ripple>
+                  <img src="chrome://favicon/[[link.url]]">
+                  <span>[[link.title]]</span>
+                </a>
+              </template>
+            </div>
+          </div>
+        </template>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <paper-button on-tap="openBookmarks"><iron-icon icon="create"></iron-icon><span>Manage Bookmarks</span></paper-button>
+      </footer>
+
+      <x-folder id={{folderId}}></x-folder>
+
+    </paper-material>
+
+  </template>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Script -->
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element
+         */
+        is: 'x-bookmarks',
+        properties: {
+
+          /* List of bookmarks */
+          bookmarks: {
+            type: Array,
+            value: []
+          },
+
+          /* ID of a folder that has been selected */
+          folderId: {
+            type: Number
+          }
+
+        },
+
+        /**
+         * Loads bookmarks from chrome.bookmarks API and loads them into this.bookmarks variable.
+         *
+         * NOTE: 'Other bookmarks' is a root-node bookmark tree enforced by Chrome bookmark structure, every user
+         *       should have one (unless they have heavily modified core Chrome bookmark features).
+         */
+        attached: function () {
+          chrome.bookmarks.getTree(function (tree) {
+            tree[0].children.forEach(function (subTree) {
+              console.log(subTree);
+              if (subTree.title === 'Other bookmarks') {
+                if (subTree.children.length > 0) {
+                  var topLinks = [];
+                  var topFolders = [];
+                  subTree.children.forEach(function (topEntry) {
+                    if (topEntry.url !== undefined) {
+                      topLinks.push({
+                        title: topEntry.title,
+                        url: topEntry.url
+                      });
+                    } else if (topEntry.children !== undefined) {
+                        if (topEntry.children.length > 0) {
+                          topFolders.push({
+                            title: topEntry.title,
+                            children: topEntry.children
+                          });
+                        }
+                    }
+                  });
+                  if (topLinks.length > 0) {
+                    this.push('bookmarks', {
+                      title: '',
+                      links: topLinks,
+                      folders: []
+                    });
+                  }
+                  if (topFolders.length > 0) {
+                    topFolders.forEach(function (folder) {
+                      var subLinks = [];
+                      var subFolders = [];
+                      folder.children.forEach(function (folderEntry) {
+                        if (folderEntry.url !== undefined) {
+                          subLinks.push({
+                            title: folderEntry.title,
+                            url: folderEntry.url
+                          });
+                        } else if (folderEntry.children !== undefined) {
+                          if (folderEntry.children.length > 0) {
+                            subFolders.push({
+                              title: folderEntry.title,
+                              id: folderEntry.id
+                            });
+                          }
+                        }
+                      });
+                      this.push('bookmarks', {
+                        title: folder.title,
+                        links: subLinks,
+                        folders: subFolders
+                      });
+                    }.bind(this));
+                  }
+                }
+              }
+            }.bind(this));
+          }.bind(this));
+        },
+
+        /**
+         * Sets folder ID to new ID, which forces <x-folder> to open its dialog window with folder's content.
+         */
+        openFolder: function (event) {
+          this.folderId = event.model.folder.id;
+        },
+
+        /**
+         * Opens chrome://bookmarks in new tab.
+         */
+        openBookmarks: function () {
+          chrome.tabs.create({ url: 'chrome://bookmarks' });
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

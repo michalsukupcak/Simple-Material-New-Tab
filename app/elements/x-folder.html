@@ -1,0 +1,213 @@
+<dom-module id="x-folder">
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Template -->
+  <template>
+    <style>
+
+      /* Element */
+      :host {}
+
+      /* Dialog with folder's content */
+      paper-dialog {
+        width: 380px;
+      }
+
+      /* Folder title */
+      paper-dialog h2 {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      /* Back arrow in title */
+      paper-dialog h2 paper-icon-button {
+        margin: 0 6px 0 0;
+      }
+
+      /* Text in title */
+      paper-dialog h2 span {}
+
+      /* Folder content */
+      paper-dialog paper-dialog-scrollable {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+
+      /* Link from the folder */
+      paper-dialog paper-dialog-scrollable a,
+      paper-dialog paper-dialog-scrollable p {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        color: var(--primary-text-color);
+        cursor: pointer;
+        display: block;
+        margin: 6px 0;
+        position: relative;
+        text-decoration: none;
+      }
+      paper-dialog paper-dialog-scrollable a:hover,
+      paper-dialog paper-dialog-scrollable p:hover {
+        text-decoration: underline;
+      }
+
+      /* Link's favicon */
+      paper-dialog paper-dialog-scrollable a img,
+      paper-dialog paper-dialog-scrollable p img {
+        margin: 0 10px 0 0;
+        width: 16px;
+      }
+
+      /* Link's title */
+      paper-dialog paper-dialog-scrollable a span,
+      paper-dialog paper-dialog-scrollable p span {
+
+      }
+
+      /* Separator */
+      paper-dialog paper-dialog-scrollable hr {
+        border: none;
+        border-top: 1px solid #CCC;
+        margin: 20px 0;
+      }
+
+    </style>
+
+    <paper-dialog id="folderDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" on-iron-overlay-canceled="resetId" on-iron-overlay-closed="resetId" modal>
+      <h2>
+        <paper-icon-button icon="arrow-back" on-tap="toParent" hidden$="[[!showBackArrow]]"></paper-icon-button>
+        <span>[[title]]</span>
+      </h2>
+      <paper-dialog-scrollable>
+        <template is="dom-repeat" items="[[folders]]" as="folder">
+          <p on-tap="setId">
+            <paper-ripple></paper-ripple>
+            <img src="../images/folder.png">
+            <span>[[folder.title]]</span>
+          </p>
+        </template>
+        <hr hidden$="[[!showSeparator]]">
+        <template is="dom-repeat" items="[[links]]" as="link">
+          <a href="[[link.url]]">
+            <paper-ripple></paper-ripple>
+            <img src="chrome://favicon/[[link.url]]">
+            <span>[[link.title]]</span>
+          </a>
+        </template>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Close</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Script -->
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element
+         */
+        is: 'x-folder',
+        properties: {
+
+          /* Opened folder */
+          id: {
+            type: Number,
+            observer: '_idChanged',
+            notify: true
+          },
+
+          /* Folder's parent ID */
+          parentId: {
+            type: Number
+          },
+
+          /* Shows or hides back arrow in dialog's title (shown if folder has parent, hidden on top level) */
+          showBackArrow: {
+            type: Boolean
+          },
+
+          /* Folder title */
+          title: {
+            type: String
+          },
+
+          /* Links in folder */
+          links: {
+            type: Array,
+            value: []
+          },
+
+          /* Sub-folders in folder */
+          folders: {
+            type: Array,
+            value: []
+          },
+
+          /* Determines if separating <hr> line will be shown between links and folders */
+          showSeparator: {
+            type: Boolean,
+            value: false
+          }
+
+        },
+
+        /**
+         *
+         * NOTE: Value this.id = 2 is fixed and set by Chrome bookmarks API to 'Other bookmarks' root folder.
+         */
+        _idChanged: function (value) {
+          if (value > 0) {
+            if (!this.$.folderDialog.opened) {
+              this.$.folderDialog.open();
+            }
+            chrome.bookmarks.getSubTree(this.id, function (folder) {
+              this.title = folder[0].title;
+              this.parentId = folder[0].parentId;
+              console.log(this.id);
+              this.showBackArrow = (this.id !== '2');
+              console.log(this.showBackArrow);
+              var links = [];
+              var folders = [];
+              folder[0].children.forEach(function (child) {
+                if (child.url !== undefined) {
+                  links.push({
+                    title: child.title,
+                    url: child.url
+                  });
+                } else if (child.children !== undefined) {
+                  if (child.children.length > 0) {
+                    folders.push({
+                      title: child.title,
+                      id: child.id
+                    });
+                  }
+                }
+              });
+              this.links = links.slice();
+              this.folders = folders.slice();
+              this.showSeparator = (links.length > 0 && folders.length > 0);
+            }.bind(this));
+          }
+        },
+
+        toParent: function () {
+          this.id = this.parentId;
+        },
+
+        setId: function (event) {
+          this.id = event.model.folder.id;
+        },
+
+        resetId: function () {
+          this.id = 0;
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

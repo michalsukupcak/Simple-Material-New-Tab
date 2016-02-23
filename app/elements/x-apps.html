@@ -1,0 +1,157 @@
+<dom-module id="x-apps">
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Template -->
+  <template>
+    <style is="custom-style" include="x-card-styles"></style>
+    <style>
+
+      /* Element */
+      :host { padding-left: 8px; }
+
+      /* Card content */
+      paper-material section {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-flex);
+      }
+
+      /* App wrapper */
+      paper-material section div {
+        border: 1px solid transparent;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: auto;
+        min-width: 120px;
+        padding: 10px;
+        position: relative;
+        text-align: center;
+        transition: .2s ease;
+        width: calc(20% - 22px);
+      }
+      paper-material section div:hover {
+        background: #F2F2F2;
+        border-color: #E5E5E5;
+      }
+
+      /* App image */
+      paper-material section div img {
+        display: block;
+        margin: auto;
+        width: 58px;
+      }
+
+      /* App name */
+      paper-material section div span {
+        display: block;
+        margin: 5px auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 110px;
+        white-space: nowrap;
+      }
+
+    </style>
+
+    <paper-material>
+
+      <!-- Header -->
+      <header>
+        <iron-icon icon="apps"></iron-icon>
+        <span>Apps</span>
+      </header>
+
+      <!-- Content -->
+      <section>
+        <template is="dom-repeat" items="[[apps]]" as="app">
+          <div on-tap="openApp" data-id="[[app.id]]">
+            <paper-ripple></paper-ripple>
+            <img src="[[app.icon]]">
+            <span>[[app.name]]</span>
+          </div>
+        </template>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <paper-button on-tap="openWebstore"><iron-icon icon="add"></iron-icon><span>Instal More Apps</span></paper-button>
+        <paper-button on-tap="openApps"><iron-icon icon="create"></iron-icon><span>Manage Apps</span></paper-button>
+      </footer>
+
+    </paper-material>
+
+  </template>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Script -->
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element
+         */
+        is: 'x-apps',
+        properties: {
+
+          // List of apps
+          apps: {
+            type: Array,
+            value: []
+          }
+
+        },
+
+        /**
+         * Attached element lifecycle state - Loads all extensions and apps from chrome.management API, extracts
+         * application data and sorts them into this.apps array.
+         */
+        attached: function () {
+          chrome.management.getAll(function (array) {
+            var apps = [];
+            array.forEach(function (item) {
+              if (item.type === 'hosted_app' || item.type === 'packaged_app' || item.type === 'legacy_packaged_app') {
+                apps.push({
+                  name: item.name,
+                  icon: item.icons[item.icons.length - 1].url,
+                  id: item.id
+                });
+              }
+            }.bind(this));
+            this.apps = apps.sort(this.compareApps).slice();
+          }.bind(this));
+        },
+
+        /**
+         * Compares leftApp and rightApp by name. Used in app sorting.
+         */
+        compareApps:  function (leftApp, rightApp) {
+          return leftApp.name.localeCompare(rightApp.name);
+        },
+
+        /**
+         * Opens app using chrome.management API.
+         */
+        openApp: function (event) {
+          chrome.management.launchApp(event.model.app.id);
+        },
+
+        /**
+         * Opens a link to Chrome Web Store in new tab.
+         */
+        openWebstore: function () {
+          chrome.tabs.create({ url: 'https://chrome.google.com/webstore' });
+        },
+
+        /**
+         * Opens chrome://apps in new tab.
+         */
+        openApps: function () {
+          chrome.tabs.create({ url: 'chrome://apps' });
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
