@@ -158,8 +158,7 @@
         attached: function () {
           chrome.bookmarks.getTree(function (tree) {
             tree[0].children.forEach(function (subTree) {
-              console.log(subTree);
-              if (subTree.title === 'Other bookmarks') {
+              if (subTree.id === '2') {
                 if (subTree.children.length > 0) {
                   var topLinks = [];
                   var topFolders = [];

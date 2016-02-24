@@ -84,11 +84,12 @@
                 <div on-tap="openAboutDialog"><paper-ripple></paper-ripple><span>About</span></div>
               </section>
             </paper-menu-button>
-            <div class="middle middle-container">
-              <div class="app-name">Simple Material New Tab</div>
-            </div>
+            <div class="middle middle-container app-name">Simple Material New Tab</div>
             <div class="bottom bottom-container">
-              <div class="bottom-title"><x-clock></x-clock></div>
+              <x-clock></x-clock>
+              <template is="dom-if" if="[[__showTopSites]]">
+                <x-topsites max="[[__topSitesMax]]"></x-topsites>
+              </template>
             </div>
           </paper-toolbar>
 
@@ -107,34 +108,35 @@
       <paper-dialog id="customizeDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
         <h2>Customization</h2>
         <paper-dialog-scrollable>
-          <div class="shortcuts">
-            <h3>Toggle Shortcuts</h3>
-            <span>Select which shortcuts will be visible in top-right corner:</span>
-            <div>
-              <paper-checkbox checked="{{__shortcuts.apps}}">Apps</paper-checkbox>
-              <paper-checkbox checked="{{__shortcuts.bookmarks}}">Bookmarks</paper-checkbox>
-              <paper-checkbox checked="{{__shortcuts.downloads}}">Downloads</paper-checkbox>
-              <paper-checkbox checked="{{__shortcuts.history}}">History</paper-checkbox>
-              <paper-checkbox checked="{{__shortcuts.extensions}}">Extensions</paper-checkbox>
-              <paper-checkbox checked="{{__shortcuts.flags}}">Flags</paper-checkbox>
-            </div>
-          </div>
+          <h3>Toggle Shortcuts</h3>
+          <span>Select which shortcuts will be visible in top-right corner:</span>
+          <paper-checkbox checked="{{__shortcuts.apps}}">Apps</paper-checkbox>
+          <paper-checkbox checked="{{__shortcuts.bookmarks}}">Bookmarks</paper-checkbox>
+          <paper-checkbox checked="{{__shortcuts.downloads}}">Downloads</paper-checkbox>
+          <paper-checkbox checked="{{__shortcuts.history}}">History</paper-checkbox>
+          <paper-checkbox checked="{{__shortcuts.extensions}}">Extensions</paper-checkbox>
+          <paper-checkbox checked="{{__shortcuts.flags}}">Flags</paper-checkbox>
+          <h3>Color theme</h3>
+          <span>Select a color theme for the extension:</span>
           <div class="fabs">
-            <h3>Color theme</h3>
-            <span>Select a color theme for the extension:</span>
-            <div>
-              <paper-fab on-tap="changeThemeColor" data-theme="red" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="pink" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="purple" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="indigo" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="blue" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="cyan" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="teal" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="green" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="orange" icon="" mini></paper-fab>
-              <paper-fab on-tap="changeThemeColor" data-theme="grey" icon="check" mini></paper-fab>
-            </div>
+            <paper-fab on-tap="changeThemeColor" data-theme="red" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="pink" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="purple" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="indigo" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="blue" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="cyan" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="teal" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="green" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="orange" icon="" mini></paper-fab>
+            <paper-fab on-tap="changeThemeColor" data-theme="grey" icon="check" mini></paper-fab>
           </div>
+          <h3>Most Visited</h3>
+          <div class="topSites">
+            <span>Show/hide most visited websites in toolbar</span>
+            <i></i>
+            <paper-toggle-button checked="{{__showTopSites}}"></paper-toggle-button>
+          </div>
+          <paper-input type="number" label="Maximum number of 'Most visited' sites displayed" value="{{__topSitesMax}}"></paper-input>
         </paper-dialog-scrollable>
         <div class="buttons">
           <paper-button dialog-dismiss>Close</paper-button>
@@ -152,7 +154,7 @@
           Simple Material New Tab extension for Chrome that replaces default Chrome new tab page with one that shows
           you your Bookmarks, Apps and provides easy access to many Chrome features.
           <ul>
-            <li><strong>Version:</strong> 1.0</li>
+            <li><strong>Version:</strong> 1.1</li>
             <li><strong>Author:</strong> <a href="https://github.com/michalsukupcak">Michal Sukupčák</a></li>
             <li><strong>Source code:</strong> <a href="https://github.com/michalsukupcak/Simple-Material-New-Tab">github.com/michalsukupcak/simple-material-new-tab</a></li>
             <li><strong>License:</strong> Do whatever you want, no copyright applies, just mention me in credits if you fork this.</li>
@@ -183,6 +185,18 @@
                          value="{{__themeColor}}"
                          on-iron-localstorage-load="__themeColorLoaded"
                          on-iron-localstorage-load-empty="__themeColorEmpty"
+      ></iron-localstorage>
+
+      <!-- Show top sites -->
+      <iron-localstorage name="smnt-show-top-sites"
+                         value="{{__showTopSites}}"
+                         on-iron-localstorage-load-empty="__topSitesEmpty"
+      ></iron-localstorage>
+
+      <!-- Max top sites -->
+      <iron-localstorage name="smnt-top-sites-max"
+                         value="{{__topSitesMax}}"
+                         on-iron-localstorage-load-empty="__topSitesMaxEmpty"
       ></iron-localstorage>
 
     </template>

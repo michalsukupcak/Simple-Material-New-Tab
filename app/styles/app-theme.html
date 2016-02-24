@@ -209,48 +209,6 @@
   /* Dialog - Content */
   paper-dialog paper-dialog-scrollable {}
 
-  /* Dialog - Content - Shortcuts container in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.shortcuts {}
-
-  /* Dialog - Content - Subtitles for shortcuts in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.shortcuts h3 {
-    margin-bottom: 0;
-    margin-top: 0;
-  }
-
-  /* Dialog - Content - Shortcut entry in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.shortcuts div {
-    @apply(--layout-vertical);
-    margin: 5px 0;
-  }
-
-  /* Dialog - Content - Shortcut entry in #customizeDialog - Checkbox */
-  paper-dialog paper-dialog-scrollable div.shortcuts div paper-checkbox {
-    margin: 5px 0 5px 15px;
-  }
-
-  /* Dialog - Content - Fabs container in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.fabs {}
-
-  /* Dialog - Content - Subtitle for fabs in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.fabs h3 {
-    margin-bottom: 0;
-  }
-
-  /* Dialog - Content - Fabs subcontainer in #customizeDialog */
-  paper-dialog paper-dialog-scrollable div.fabs div { @apply(--layout-horizontal); @apply(--layout-wrap); margin: 10px 0 0 0; }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab { margin: 3px; }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="red"] { background: var(--color-red); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="pink"] { background: var(--color-pink); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="purple"] { background: var(--color-purple); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="indigo"] { background: var(--color-indigo); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="blue"] { background: var(--color-blue); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="cyan"] { background: var(--color-cyan); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="teal"] { background: var(--color-teal); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="green"] { background: var(--color-green); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="orange"] { background: var(--color-orange); }
-  paper-dialog paper-dialog-scrollable div.fabs div paper-fab[data-theme="grey"] { background: var(--color-grey); }
-
   /* Dialog - Content - List */
   paper-dialog paper-dialog-scrollable ul {}
 
@@ -263,6 +221,51 @@
   }
   paper-dialog paper-dialog-scrollable ul li a:hover {
     text-decoration: none;
+  }
+
+  /* Customize dialog */
+  paper-dialog#customizeDialog {}
+
+  paper-dialog#customizeDialog paper-dialog-scrollable {}
+
+  paper-dialog#customizeDialog paper-dialog-scrollable h3 {
+    margin-bottom: 0;
+    margin-top: 30px;
+  }
+  paper-dialog#customizeDialog paper-dialog-scrollable h3:first-of-type {
+    margin-top: 0;
+  }
+
+  paper-dialog#customizeDialog paper-dialog-scrollable span {}
+
+  paper-dialog#customizeDialog paper-dialog-scrollable paper-checkbox {
+    display: block;
+    margin: 5px 0 5px 15px;
+  }
+
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs {
+    @apply(--layout-horizontal);
+    @apply(--layout-wrap);
+  }
+
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab { margin: 3px; }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="red"] { background: var(--color-red); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="pink"] { background: var(--color-pink); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="purple"] { background: var(--color-purple); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="indigo"] { background: var(--color-indigo); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="blue"] { background: var(--color-blue); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="cyan"] { background: var(--color-cyan); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="teal"] { background: var(--color-teal); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="green"] { background: var(--color-green); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="orange"] { background: var(--color-orange); }
+  paper-dialog#customizeDialog paper-dialog-scrollable div.fabs paper-fab[data-theme="grey"] { background: var(--color-grey); }
+
+  paper-dialog paper-dialog-scrollable div.topSites {
+    @apply(--layout-horizontal);
+  }
+
+  paper-dialog paper-dialog-scrollable div.topSites i {
+    @apply(--layout-flex);
   }
 
   /* Toast */

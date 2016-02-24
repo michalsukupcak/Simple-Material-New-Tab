@@ -55,10 +55,9 @@
     app.setMainHeight();
   };
 
-  app.__shortcutsLoaded = function () {
-
-  };
-
+  /**
+   * this.__shortcuts is undefined in localstorage, set default values (enable all by default).
+   */
   app.__shortcutsEmpty = function () {
     this.__shortcuts = {
       apps: true,
@@ -75,10 +74,12 @@
    */
   app.__themeColorLoaded = function () {
     this.applyThemeColor(this.__themeColor);
+    this.removeFabChecks();
+    document.querySelector('paper-fab[data-theme="' + this.__themeColor + '"]').icon = 'check';
   };
 
   /**
-   * If this.__themeColor is undefined, set default theme (grey).
+   * If this.__themeColor is undefined in localstorage, set default theme (grey).
    */
   app.__themeColorEmpty = function () {
     this.applyThemeColor('grey');
@@ -114,6 +115,14 @@
         checkboxes[i].customStyle['--paper-checkbox-checked-ink-color'] = color;
       }
     }
+    var toggles = document.querySelectorAll('paper-toggle-button');
+    for (var i in toggles) {
+      if (toggles.hasOwnProperty(i)) {
+        toggles[i].customStyle['--paper-toggle-button-checked-bar-color'] = color;
+        toggles[i].customStyle['--paper-toggle-button-checked-button-color'] = color;
+        toggles[i].customStyle['--paper-toggle-button-checked-ink-color'] = color;
+      }
+    }
     var cards = document.querySelectorAll('x-bookmarks, x-apps');
     for (var i in cards) {
       if (cards.hasOwnProperty(i)) {
@@ -121,8 +130,11 @@
       }
     }
     Polymer.updateStyles();
-  }
+  };
 
+  /**
+   * Removes check marks (icons) from mini FAB buttons.
+   */
   app.removeFabChecks = function () {
     var fabs = document.querySelectorAll('paper-fab[mini]');
     for (var i in fabs) {
@@ -130,6 +142,21 @@
         fabs[i].icon = '';
       }
     }
-  }
+  };
+
+  /**
+   * If this.__showTopSites is undefined in localstorage, set default value (false).
+   */
+  app.__showTopSitesEmpty = function () {
+    this.__showTopSites = false;
+  };
+
+  /**
+   * If this._topSitesMax is undefined in localstorage, set default value (8).
+   */
+  app.__topSitesMaxEmpty = function () {
+    this.__topSitesMax = 8;
+  };
+
 
 })(document);
