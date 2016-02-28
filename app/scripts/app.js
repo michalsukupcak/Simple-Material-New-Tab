@@ -6,11 +6,10 @@
 
   /**
    * Sets height of <main> element.
-   * NOTE: 256(px) is static value calculated from height of main toolbar (paper-toolbar.tall, 192px) and sum of margin
-   *       and padding of the rest of the page (64px).
+   * NOTE: 192px is a static value derived from paper-toolbar.tall height (#mainToolbar).
    */
   app.setMainHeight = function () {
-    this.$.content.style.height = window.outerHeight - 256 + 'px';
+    this.$.content.style.height = window.innerHeight - 192 + 'px';
   };
 
   /**
@@ -143,20 +142,5 @@
       }
     }
   };
-
-  /**
-   * If this.__showTopSites is undefined in localstorage, set default value (false).
-   */
-  app.__showTopSitesEmpty = function () {
-    this.__showTopSites = false;
-  };
-
-  /**
-   * If this._topSitesMax is undefined in localstorage, set default value (8).
-   */
-  app.__topSitesMaxEmpty = function () {
-    this.__topSitesMax = 8;
-  };
-
 
 })(document);

@@ -87,9 +87,6 @@
             <div class="middle middle-container app-name">Simple Material New Tab</div>
             <div class="bottom bottom-container">
               <x-clock></x-clock>
-              <template is="dom-if" if="[[__showTopSites]]">
-                <x-topsites max="[[__topSitesMax]]"></x-topsites>
-              </template>
             </div>
           </paper-toolbar>
 
@@ -130,13 +127,6 @@
             <paper-fab on-tap="changeThemeColor" data-theme="orange" icon="" mini></paper-fab>
             <paper-fab on-tap="changeThemeColor" data-theme="grey" icon="check" mini></paper-fab>
           </div>
-          <h3>Most Visited</h3>
-          <div class="topSites">
-            <span>Show/hide most visited websites in toolbar</span>
-            <i></i>
-            <paper-toggle-button checked="{{__showTopSites}}"></paper-toggle-button>
-          </div>
-          <paper-input type="number" label="Maximum number of 'Most visited' sites displayed" value="{{__topSitesMax}}"></paper-input>
         </paper-dialog-scrollable>
         <div class="buttons">
           <paper-button dialog-dismiss>Close</paper-button>
@@ -185,18 +175,6 @@
                          value="{{__themeColor}}"
                          on-iron-localstorage-load="__themeColorLoaded"
                          on-iron-localstorage-load-empty="__themeColorEmpty"
-      ></iron-localstorage>
-
-      <!-- Show top sites -->
-      <iron-localstorage name="smnt-show-top-sites"
-                         value="{{__showTopSites}}"
-                         on-iron-localstorage-load-empty="__topSitesEmpty"
-      ></iron-localstorage>
-
-      <!-- Max top sites -->
-      <iron-localstorage name="smnt-top-sites-max"
-                         value="{{__topSitesMax}}"
-                         on-iron-localstorage-load-empty="__topSitesMaxEmpty"
       ></iron-localstorage>
 
     </template>
